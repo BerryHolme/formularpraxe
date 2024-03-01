@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <form action="submit-school-form/" method="post" enctype="multipart/form-data">
+        <label for="name">Název školy:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="address">Adresa:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="praxeDate">Datum praxe:</label>
+        <input type="text" id="praxeDate" name="praxeDate" required>
+
+        <label for="field">Obor:</label>
+        <input type="text" id="field" name="field" required>
+
+        <label for="focus">Specializace:</label>
+        <input type="text" id="focus" name="focus" required>
+
+        <label for="class">Třída:</label>
+        <input type="text" id="class" name="class" required>
+
+        <label for="note">Poznámka:</label>
+        <input type="text" id="note" name="note" required>
+
+        <label for="stamp">Razítko školy (obrázek):</label>
+        <input type="file" id="stamp" name="stamp" accept="image/*">
+
+        <label for="logo">Logo školy (obrázek):</label>
+        <input type="file" id="logo" name="logo" accept="image/*">
+
+        <button type="submit">Odeslat</button>
+    </form>
+</div>
+
+<img src="/formularpraxe/images/razitko.jpg">
+<img src="/formularpraxe/images/logo.jpg">
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        fetch('get-school-data/')
+            .then(response => response.json())
+            .then(data => {
+                if(data.exists) {
+                    document.getElementById('name').value = data.name || '';
+                    document.getElementById('address').value = data.address || '';
+                    document.getElementById('praxeDate').value = data.praxeDate || '';
+                    document.getElementById('field').value = data.field || '';
+                    document.getElementById('focus').value = data.focus || '';
+                    document.getElementById('class').value = data.class || '';
+                    document.getElementById('note').value = data.note || '';
+                } else {
+                    document.querySelectorAll('input[type=text]').forEach(input => {
+                        input.value = 'Neexistuje';
+                    });
+                }
+            })
+            .catch(error => console.error('Chyba při načítání dat:', error));
+    });
+</script>
+
+</body>
+</html>
