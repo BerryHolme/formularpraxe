@@ -11,6 +11,7 @@
   ],
   "require": {
     "bcosca/fatfree": ">=3.8",
-    "ikkez/f3-cortex": ">=v1.7"
+    "ikkez/f3-cortex": ">=v1.7",
+    "dompdf/dompdf": ">=v2.0"
   }
 }

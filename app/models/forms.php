@@ -11,6 +11,7 @@ class forms extends Cortex
         $table = 'forms';
 
     protected $fieldConf = [
+        'id' =>['type'=>'INT4', 'nullable'=>false],
         'name' =>['type'=>'VARCHAR256', 'nullable'=>false],
         'surname' =>['type'=>'VARCHAR256', 'nullable'=>false],
         'id_number' =>['type'=>'VARCHAR256', 'nullable'=>false],

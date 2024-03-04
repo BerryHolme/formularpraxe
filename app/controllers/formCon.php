@@ -4,6 +4,12 @@ namespace controllers;
 
 class formCon
 {
+
+    public function getForm()
+    {
+        echo \Template::instance()->render("formular.html");
+    }
+
     public function submitForm(\Base $base)
     {
         $form = new \models\forms();
@@ -64,6 +70,42 @@ class formCon
         return '';
     }
 
+    public function listForms(\Base $base)
+    {
+        $queryParam = $base->get('GET.query');
+        $forms = new \models\forms();
+        if (!empty($queryParam)) {
+            $searchCondition = array('name LIKE ? OR surname LIKE ? OR email LIKE ? OR companyName LIKE ?',
+                '%' . $queryParam . '%', '%' . $queryParam . '%', '%' . $queryParam . '%', '%' . $queryParam . '%');
+            $allForms = $forms->find($searchCondition);
+        } else {
+            $allForms = $forms->find();
+        }
+
+        $result = [];
+        foreach ($allForms as $form) {
+            $result[] = $form->cast();
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+    }
 
 
+    public function getList()
+    {
+        echo \Template::instance()->render("list.html");
+    }
+
+    public function getPDF(\Base $base, $params)
+    {
+        $id = $params['id'];
+        $forms = new \models\forms();
+        $form = $forms->findone(["id=?", $id]);
+
+        $schools = new \models\school();
+        $school = $schools->findone(["id=?", "1"]);
+
+
+    }
 }
