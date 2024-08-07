@@ -103,9 +103,67 @@ class formCon
         $forms = new \models\forms();
         $form = $forms->findone(["id=?", $id]);
 
-        $schools = new \models\school();
-        $school = $schools->findone(["id=?", "1"]);
+        if (!$form) {
+            echo "Form not found.";
+            return;
+        }
+
+
+        $formData = $form->cast();
+        $html = '
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulář PDF</title>
+    <style>
+    body
+        {
+            font-family: "DejaVu Sans", "sans-serif";
+            font-size: 10px;
+        }
+</style>
+</head>
+<body>
+    <img src="/formularpraxe/app/images/razitko.jpg">
+    <h1>Údaje o žákovi</h1>
+    <p><strong>Jméno:</strong> ' . htmlspecialchars($formData['name']) . '</p>
+    <p><strong>Příjmení:</strong> ' . htmlspecialchars($formData['surname']) . '</p>
+    <p><strong>Číslo občanského průkazu:</strong> ' . htmlspecialchars($formData['id_number']) . '</p>
+    <p><strong>Telefon:</strong> ' . htmlspecialchars($formData['phone']) . '</p>
+    <p><strong>Email:</strong> ' . htmlspecialchars($formData['email']) . '</p>
+    <h1>Údaje o společnosti</h1>
+    <p><strong>Název společnosti:</strong> ' . htmlspecialchars($formData['companyName']) . '</p>
+    <p><strong>IČO společnosti:</strong> ' . htmlspecialchars($formData['companyICO']) . '</p>
+    <p><strong>Adresa společnosti:</strong> ' . htmlspecialchars($formData['companyAddress']) . '</p>
+    <p><strong>Telefon společnosti:</strong> ' . htmlspecialchars($formData['companyPhone']) . '</p>
+    <h1>Údaje o zástupci</h1>
+    <p><strong>Jméno zástupce společnosti:</strong> ' . htmlspecialchars($formData['companyRepresentativeName']) . '</p>
+    <p><strong>Příjmení zástupce společnosti:</strong> ' . htmlspecialchars($formData['companyRepresentativeSurname']) . '</p>
+    <h1>Údaje o vedoucím praxe</h1>
+    <p><strong>Jméno vedoucího:</strong> ' . htmlspecialchars($formData['companyMasterName']) . '</p>
+    <p><strong>Příjmení vedoucího:</strong> ' . htmlspecialchars($formData['companyMasterSurname']) . '</p>
+    <p><strong>Telefon vedoucího:</strong> ' . htmlspecialchars($formData['companyMasterPhone']) . '</p>
+    <h1>Údaje o praxi</h1>
+    <p><strong>Aktivita:</strong> ' . htmlspecialchars($formData['Activity']) . '</p>
+    <p><strong>Místo:</strong> ' . htmlspecialchars($formData['Place']) . '</p>
+</body>
+</html>
+';
+
+
+
+        echo $html;
+/*
+        $pdf = new \Dompdf\Dompdf();
+        $pdf->loadHtml($html, 'UTF-8'); //113
+        $pdf->setPaper('A4', 'portrait');
+        $pdf->render();
+        $pdf->stream('formular.pdf');
+*/
+
+
 
 
     }
+
 }
